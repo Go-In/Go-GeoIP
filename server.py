@@ -17,7 +17,11 @@ class GeoIP(Resource):
         parser.add_argument('ip',type=str, location='args')
         args = parser.parse_args()
         res = mmdb.city(args['ip'])
-        return res.raw
+        return {
+            'latitude': res.location.latitude,
+            'longitude': res.location.longitude,
+            'country_name': res.country.names['en']
+        }
 
 api.add_resource(Index, '/')
 api.add_resource(GeoIP, '/geo-ip')
