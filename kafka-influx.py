@@ -7,9 +7,9 @@ mmdb = GeoIPReader('./db/GeoLite2-City.mmdb')
 asndb = GeoIPReader('./db/GeoLite2-ASN.mmdb')
 
 consumer = KafkaConsumer('suricata',
-                 group_id='plan_love_mm',
-                 bootstrap_servers=['202.28.214.90:9092'])
-
+                 group_id='oh_my_gosh',
+                 bootstrap_servers=['202.28.214.90:9092'],
+		enable_auto_commit=False)
 client = InfluxDBClient('localhost', 8086, '', '', 'suricata')
 
 def flatten(current, key, result):
@@ -59,8 +59,9 @@ for message in consumer:
                 data['src_autonomous_system'] = 'unknown'
 
         json_body = [{
-                "measurement":"ids",
+                "measurement":"intrusion",
                 "time":data['timestamp'],
+		"tags":flatten(data,'',{}),
                 "fields":flatten(data,'',{})
         }]
         print(json_body)
