@@ -33,8 +33,8 @@ class GeoIP(Resource):
             'latitude': res.location.latitude,
             'longitude': res.location.longitude,
             'country_name': res.country.names['en'],
-            'asn': asndb.asn('66.102.9.104').autonomous_system_number,
-            'autonomous_system': asndb.asn('66.102.9.104').autonomous_system_organization
+            'asn': asn.autonomous_system_number,
+            'autonomous_system': asn.autonomous_system_organization
         }
 
 api.add_resource(Index, '/')
