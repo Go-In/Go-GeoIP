@@ -22,16 +22,16 @@ class List(Resource):
 
 class Stat(Resource):
     def get(self):
-        src_ip = client.query('SELECT COUNT("src_ip") FROM "intrusion" GROUP BY "src_ip";')
-        dest_ip = client.query('SELECT  COUNT("dest_ip") FROM "intrusion" GROUP BY "dest_ip";')
-        src_country_name = client.query('SELECT COUNT("src_country_name") FROM "intrusion" GROUP BY "src_country_name";')
-        dest_country_name = client.query('SELECT COUNT("dest_country_name") FROM "intrusion" GROUP BY "dest_country_name";')
-        print(src_ip.raw)
+        src_ip = client.query('SELECT COUNT("src_ip") FROM "intrusion" GROUP BY "src_ip";').raw
+        dest_ip = client.query('SELECT  COUNT("dest_ip") FROM "intrusion" GROUP BY "dest_ip";').raw
+        src_country_name = client.query('SELECT COUNT("src_country_name") FROM "intrusion" GROUP BY "src_country_name";').raw
+        dest_country_name = client.query('SELECT COUNT("dest_country_name") FROM "intrusion" GROUP BY "dest_country_name";').raw
+ 
         return {
-            "src_ip":list(src_ip.raw),
-            "dest_ip":list(dest_ip.raw),
-            "src_country":list(src_country_name.raw),
-            "dest_country":list(dest_country_name.raw)
+            "src_ip":[{'src_ip':x['tags']['src_ip'],'value':x['values'][0][1]} for x in src_ip['series']],
+            "dest_ip":[{'dest_ip':x['tags']['dest_ip'],'value':x['values'][0][1]} for x in dest_ip['series']],
+            "src_country":[{'src_country':x['tags']['src_country_name'],'value':x['values'][0][1]} for x in src_country_name['series']],
+            "dest_country":[{'dest_country':x['tags']['dest_country_name'],'value':x['values'][0][1]} for x in dest_country_name['series']]
         }
 
 api.add_resource(Index, '/')
