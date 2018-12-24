@@ -6,8 +6,10 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 api = Api(app)
 
-cors = CORS(app)
+CORS(api)
+CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+api.config['CORS_HEADERS'] = 'Content-Type'
 
 client = InfluxDBClient('localhost', 8086, '', '', 'suricata')
 
