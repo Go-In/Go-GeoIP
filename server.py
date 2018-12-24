@@ -3,6 +3,7 @@ from flask_restful import Resource, Api, reqparse
 from geoip2.database import Reader as GeoIPReader
 
 mmdb = GeoIPReader('./db/GeoLite2-City.mmdb')
+asndb = GeoIPReader('./db/GeoLite2-ASN.mmdb')
 
 app = Flask(__name__)
 api = Api(app)
@@ -16,11 +17,24 @@ class GeoIP(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('ip',type=str, location='args')
         args = parser.parse_args()
-        res = mmdb.city(args['ip'])
+        try:
+            res = mmdb.city(args['ip'])
+            asn = asndb.asn(args['ip'])
+        except :
+            return {
+            'latitude': '0',
+            'longitude': '0',
+            'country_name': 'unknown',
+            'asn': 'unknown',
+            'autonomous_system': 'unknown'
+            }
+        
         return {
             'latitude': res.location.latitude,
             'longitude': res.location.longitude,
-            'country_name': res.country.names['en']
+            'country_name': res.country.names['en'],
+            'asn': asndb.asn('66.102.9.104').autonomous_system_number,
+            'autonomous_system': asndb.asn('66.102.9.104').autonomous_system_organization
         }
 
 api.add_resource(Index, '/')
