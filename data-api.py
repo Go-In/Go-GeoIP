@@ -26,12 +26,12 @@ class Stat(Resource):
         dest_ip = client.query('SELECT  COUNT("dest_ip") FROM "intrusion" GROUP BY "dest_ip";')
         src_country_name = client.query('SELECT COUNT("src_country_name") FROM "intrusion" GROUP BY "src_country_name";')
         dest_country_name = client.query('SELECT COUNT("dest_country_name") FROM "intrusion" GROUP BY "dest_country_name";')
-
+        print(src_ip.raw)
         return {
-            "src_ip":list(src_ip.get_points()),
-            "dest_ip":list(dest_ip.get_points()),
-            "src_country":list(src_country_name.get_points()),
-            "dest_country":list(dest_country_name.get_points())
+            "src_ip":list(src_ip.raw),
+            "dest_ip":list(dest_ip.raw),
+            "src_country":list(src_country_name.raw),
+            "dest_country":list(dest_country_name.raw)
         }
 
 api.add_resource(Index, '/')
