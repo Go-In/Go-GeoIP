@@ -22,10 +22,10 @@ class List(Resource):
 
 class Stat(Resource):
     def get(self):
-        src_ip = client.query('SELECT FIRST("src_ip"), COUNT("src_ip") FROM "ids" GROUP BY "src_ip";')
-        dest_ip = client.query('SELECT FIRST("dest_ip"), COUNT("dest_ip") FROM "ids" GROUP BY "dest_ip";')
-        src_country_name = client.query('SELECT FIRST("src_country_name"), COUNT("src_country_name") FROM "ids" GROUP BY "src_country_name";')
-        dest_country_name = client.query('SELECT FIRST("dest_country_name"), COUNT("dest_country_name") FROM "ids" GROUP BY "dest_country_name";')
+        src_ip = client.query('SELECT COUNT("src_ip") FROM "ids" GROUP BY "src_ip";')
+        dest_ip = client.query('SELECT  COUNT("dest_ip") FROM "ids" GROUP BY "dest_ip";')
+        src_country_name = client.query('SELECT COUNT("src_country_name") FROM "ids" GROUP BY "src_country_name";')
+        dest_country_name = client.query('SELECT COUNT("dest_country_name") FROM "ids" GROUP BY "dest_country_name";')
 
         return {
             "src_ip":list(src_ip.get_points()),
