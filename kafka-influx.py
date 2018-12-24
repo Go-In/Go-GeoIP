@@ -59,7 +59,7 @@ for message in consumer:
                 data['src_autonomous_system'] = 'unknown'
 
         json_body = [{
-                "measurement":"test",
+                "measurement":"ids",
                 "time":data['timestamp'],
                 "fields":flatten(data,'',{})
         }]
