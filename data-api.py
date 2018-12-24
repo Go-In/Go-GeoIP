@@ -14,6 +14,8 @@ class Index(Resource):
 class List(Resource):
     def get(self):
         result = client.query('select * from ids;')
+        print(result)
+        print(type(result))
         return result
 
 
