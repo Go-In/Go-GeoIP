@@ -17,15 +17,15 @@ class Index(Resource):
 
 class List(Resource):
     def get(self):
-        result = client.query('SELECT * FROM ids ORDER BY time DESC LIMIT 20;')
+        result = client.query('SELECT * FROM intrusion ORDER BY time DESC LIMIT 20;')
         return list(result.get_points())
 
 class Stat(Resource):
     def get(self):
-        src_ip = client.query('SELECT COUNT("src_ip") FROM "ids" GROUP BY "src_ip";')
-        dest_ip = client.query('SELECT  COUNT("dest_ip") FROM "ids" GROUP BY "dest_ip";')
-        src_country_name = client.query('SELECT COUNT("src_country_name") FROM "ids" GROUP BY "src_country_name";')
-        dest_country_name = client.query('SELECT COUNT("dest_country_name") FROM "ids" GROUP BY "dest_country_name";')
+        src_ip = client.query('SELECT COUNT("src_ip") FROM "intrusion" GROUP BY "src_ip";')
+        dest_ip = client.query('SELECT  COUNT("dest_ip") FROM "intrusion" GROUP BY "dest_ip";')
+        src_country_name = client.query('SELECT COUNT("src_country_name") FROM "intrusion" GROUP BY "src_country_name";')
+        dest_country_name = client.query('SELECT COUNT("dest_country_name") FROM "intrusion" GROUP BY "dest_country_name";')
 
         return {
             "src_ip":list(src_ip.get_points()),
