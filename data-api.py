@@ -26,12 +26,14 @@ class Stat(Resource):
         dest_ip = client.query('SELECT  COUNT("dest_ip") FROM "intrusion" GROUP BY "dest_ip";').raw
         src_country_name = client.query('SELECT COUNT("src_country_name") FROM "intrusion" GROUP BY "src_country_name";').raw
         dest_country_name = client.query('SELECT COUNT("dest_country_name") FROM "intrusion" GROUP BY "dest_country_name";').raw
- 
+        overtime = client.query('SELECT COUNT("src_ip") FROM "intrusion" GROUP BY time(15m);')	
+
         return {
             "src_ip":[{'src_ip':x['tags']['src_ip'],'value':x['values'][0][1]} for x in src_ip['series']],
             "dest_ip":[{'dest_ip':x['tags']['dest_ip'],'value':x['values'][0][1]} for x in dest_ip['series']],
             "src_country":[{'src_country':x['tags']['src_country_name'],'value':x['values'][0][1]} for x in src_country_name['series']],
-            "dest_country":[{'dest_country':x['tags']['dest_country_name'],'value':x['values'][0][1]} for x in dest_country_name['series']]
+            "dest_country":[{'dest_country':x['tags']['dest_country_name'],'value':x['values'][0][1]} for x in dest_country_name['series']],
+            "time":list(overtime.get_points())
         }
 
 api.add_resource(Index, '/')
